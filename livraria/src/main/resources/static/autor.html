@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Marcus Aurelio Melo de oliveira Santos">
+    
+
+    <title>Sistema de Cadastro Livros</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="dashboard.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Registro de Livros</a>
+      
+     
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+          <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link " href="index.html">
+                  <span data-feather="home"></span>
+                  Home <span class="sr-only"></span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="autor.html">
+                  <span data-feather="home"></span>
+                  Autor <span class="sr-only"></span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="file"></span>
+                  Estilo
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="shopping-cart"></span>
+                  Editora
+                </a>
+              </li>
+              
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="shopping-cart"></span>
+                  Livro
+                </a>
+              </li>
+              
+            </ul>
+
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+             
+          </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">Cadastro de Autores</h1>
+            	
+          </div>
+
+         		<div class="card">
+  					<div class="card-body">
+    					<form id="formAutor">
+						  <div class="form-group">
+						    <label for="id">ID:</label>
+						    <input type="text" class="form-control" id="id" readonly="readonly">
+						  </div>
+						  <div class="form-group">
+						    <label for="nome">Nome:</label>
+						    <input type="text" class="form-control" id="nome" placeholder="Informe o Nome">
+						  </div>
+						  <div class="form-group">
+						    <label for="email">email:</label>
+						    <input type="text" class="form-control" id="email" placeholder="Informe o email">
+						  </div>
+						  
+						  
+						  <div class="form-group">
+						    <label for="telefone">Telefone:</label>
+						    <input type="text" class="form-control" id="telefone" placeholder="Informe o telefone">
+						  </div>
+						  <button type="button" class="btn btn-primary" onclick="salvar()">Salvar</button>
+						  <button type="button" class="btn btn-secondary" onclick="document.getElementById('formAutor').reset();">Novo</button>
+						</form>
+ 					 </div>
+				</div>
+				
+				<table class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col">ID</th>
+				      <th scope="col">Nome</th>
+				      <th scope="col">Email</th>
+				      <th scope="col">Telefone</th>
+				      <th scope="col">Deletar</th>
+				      <th scope="col">ver</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    
+				  </tbody>
+				</table>
+					
+          
+          </div>
+        </main>
+      </div>
+    </div>
+    
+    <script type="text/javascript">
+    	function salvar(){
+    		var id = $("#id").val();
+			var nome = $("#nome").val();
+			var email = $("#email").val();
+			var telefone = $("#telefone").val();
+			
+			if(nome ==null || nome !=null && nome.trim() == ''){
+				alert('Informe o Nome');
+				return
+			}
+			if(email ==null || email !=null && email.trim() == ''){
+				alert('Informe o email');
+				return
+			}
+			if(telefone ==null || telefone !=null && telefone.trim() == ''){
+				alert('Informe o telefone');
+				return
+			}
+			
+			$.ajax({
+				method: "POST",
+				url:"autor",
+				data: JSON.stringify({id:id,nome:nome,email:email,telefone:telefone}), 
+				contentType:"application/json; charset=utf-8",
+				success: function(response){
+					$("#id").val(response.id);
+					alert('Gravou com sucesso!!!');
+				}
+			}).fail(function(xhr,status,errorThrown){
+				alert('erro ao gravar: '+xhr.responseText);
+			});
+    	}
+    
+    </script>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    
+    <script src="js/bootstrap.min.js"></script>
+
+    
+
+    
+  </body>
+</html>
