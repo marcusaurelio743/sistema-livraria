@@ -3,53 +3,47 @@ package livraria.rest;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import livraria.model.Autor;
-import livraria.repository.AutorRepository;
+import livraria.model.Estilo;
+import livraria.repository.EstiloRepository;
 
 @RestController
-@RequestMapping("/autor")
-
-public class AutorController {
+@RequestMapping("/estilo")
+public class EstiloController {
 	
-	private final AutorRepository repository;
+	private EstiloRepository repository;
 	
-	@Autowired
-	public AutorController( AutorRepository repository) {
+	public EstiloController(EstiloRepository repository) {
 		this.repository = repository;
 	}
 	
 	@GetMapping
-	public List<Autor> listAutors(){
-		
-		return repository.findAll(); 
+	public List<Estilo> listaEstilo(){
+		return repository.findAll();
 	}
 	
 	@GetMapping(value = "editar")
-	public Autor buscaPorId(@RequestParam Long id){
-		Optional<Autor> autor = repository.findById(id);
-		Autor objeto = autor.get();
+	public Estilo buscarPorId(@RequestParam Long id) {
+		Optional<Estilo> estilo = repository.findById(id);
 		
-		return objeto; 
+		Estilo objeto = estilo.get();
+		
+		return objeto;	
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Autor salvar(@RequestBody Autor autor) {
-		
-		return repository.save(autor);
+	public Estilo salvar(@RequestBody Estilo estilo) {
+		return repository.save(estilo);
 	}
 	
 	@DeleteMapping
@@ -57,6 +51,5 @@ public class AutorController {
 	public void deletar(@RequestParam Long id) {
 		repository.deleteById(id);
 	}
-	
 
 }
