@@ -175,7 +175,7 @@
 			
 			for(var i=0; i < response.length; i++ ){
 				
-				$('#tabelaEstilo > tbody').append('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" class="btn btn-primary" onclick="verEditar('+response[i].id+')">Ver</button></td><td><button type="button"  class="btn btn-danger" onclick="deletarUser('+response[i].id+')" >Deletar</button></td></tr>');	
+				$('#tabelaEditora > tbody').append('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" class="btn btn-primary" onclick="verEditar('+response[i].id+')">Ver</button></td><td><button type="button"  class="btn btn-danger" onclick="deletarUser('+response[i].id+')" >Deletar</button></td></tr>');	
 				
 			}
 			
@@ -186,25 +186,40 @@
 	});
     }
     	function salvar(){
-    		var id = $("#id").val();
-			var estilo = $("#estilo").val();
+			
+			var id = $("#id").val();
+			var nome = $("#nome").val();
+			var telefone = $("#telefone").val();
+			var email =$("#email").val();
 			
 			
-			if(estilo ==null || estilo !=null && estilo.trim() == ''){
-				alert('Informe o Estilo');
+			if(nome ==null || nome !=null && nome.trim() == ''){
+				alert('Informe o nome');
+				return
+			}
+			if(telefone ==null || telefone !=null && telefone.trim() == ''){
+				alert('Informe o telefone');
+				return
+			}
+			if(email ==null || email !=null && email.trim() == ''){
+				alert('Informe o email');
 				return
 			}
 			
 			$.ajax({
 				method: "POST",
-				url:"estilo",
+				url:"editora",
 				
 				data: JSON.stringify({id:id,nome:nome,telefone:telefone,email:email}), 
 				contentType:"application/json; charset=utf-8",
 				success: function(response){
-					$("#id").val(response.id);
+					
+					var id =$("#id").val(response.id);
 					alert('Gravou com sucesso!!!');
+					if(id == response.id ){
 					$('#'+id).remove();
+					}
+					
 					$('#tabelaEditora > tbody').append('<tr id="'+response.id+'"><td>'+response.id+'</td><td>'+response.nome+'</td><td><button type="button" class="btn btn-primary" onclick="verEditar('+response.id+')">Ver</button></td><td><button type="button"  class="btn btn-danger" onclick="deletarUser('+response.id+')" >Deletar</button></td></tr>');	
 					
 				}

@@ -212,9 +212,11 @@
 				data: JSON.stringify({id:id,nome:nome,email:email,telefone:telefone}), 
 				contentType:"application/json; charset=utf-8",
 				success: function(response){
-					$("#id").val(response.id);
+					var id =$("#id").val(response.id);
 					alert('Gravou com sucesso!!!');
+					if(id == response.id ){
 					$('#'+id).remove();
+					}
 					$('#tabelaAutor > tbody').append('<tr id="'+response.id+'"><td>'+response.id+'</td><td>'+response.nome+'</td><td>'+response.email+'</td><td>'+response.telefone+'</td><td><button type="button" class="btn btn-primary" onclick="verEditar('+response.id+')">Ver</button></td><td><button type="button"  class="btn btn-danger" onclick="deletarUser('+response.id+')" >Deletar</button></td></tr>');	
 					
 				}

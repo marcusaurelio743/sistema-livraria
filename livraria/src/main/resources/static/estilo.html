@@ -47,7 +47,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="editora.html">
                   <span data-feather="shopping-cart"></span>
                   Editora
                 </a>
@@ -190,9 +190,11 @@
 				data: JSON.stringify({id:id,estilo:estilo}), 
 				contentType:"application/json; charset=utf-8",
 				success: function(response){
-					$("#id").val(response.id);
+					var id =$("#id").val(response.id);
 					alert('Gravou com sucesso!!!');
+					if(id == response.id ){
 					$('#'+id).remove();
+					}
 					$('#tabelaEstilo > tbody').append('<tr id="'+response.id+'"><td>'+response.id+'</td><td>'+response.estilo+'</td><td><button type="button" class="btn btn-primary" onclick="verEditar('+response.id+')">Ver</button></td><td><button type="button"  class="btn btn-danger" onclick="deletarUser('+response.id+')" >Deletar</button></td></tr>');	
 					
 				}
