@@ -192,7 +192,7 @@
 				success: function(response){
 					$("#id").val(response.id);
 					alert('Gravou com sucesso!!!');
-					
+					$('#'+id).remove();
 					$('#tabelaEstilo > tbody').append('<tr id="'+response.id+'"><td>'+response.id+'</td><td>'+response.estilo+'</td><td><button type="button" class="btn btn-primary" onclick="verEditar('+response.id+')">Ver</button></td><td><button type="button"  class="btn btn-danger" onclick="deletarUser('+response.id+')" >Deletar</button></td></tr>');	
 					
 				}

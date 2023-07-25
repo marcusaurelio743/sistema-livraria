@@ -69,7 +69,7 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <h1 class="h2">Cadastro de Autores</h1>
+            <h1 class="h2">Cadastrar Editora</h1>
             	
           </div>
 
@@ -82,18 +82,17 @@
 						  </div>
 						  <div class="form-group">
 						    <label for="nome">Nome:</label>
-						    <input type="text" class="form-control" id="nome" placeholder="Informe o Nome">
+						    <input type="text" class="form-control" id="nome" placeholder="Informe o Nome da Editora">
 						  </div>
-						  <div class="form-group">
-						    <label for="email">email:</label>
-						    <input type="text" class="form-control" id="email" placeholder="Informe o email">
-						  </div>
-						  
-						  
 						  <div class="form-group">
 						    <label for="telefone">Telefone:</label>
-						    <input type="text" class="form-control" id="telefone" placeholder="Informe o telefone">
+						    <input type="text" class="form-control" id="telefone" placeholder="Informe o Telefone da Editora">
 						  </div>
+						  <div class="form-group">
+						    <label for="email">Email:</label>
+						    <input type="text" class="form-control" id="email" placeholder="Informe o email da Editora">
+						  </div>
+						  
 						  <button type="button" class="btn btn-primary" onclick="salvar()">Salvar</button>
 						   
 						  <button type="button" class="btn btn-secondary" onclick="document.getElementById('formAutor').reset();">Novo</button>
@@ -101,13 +100,11 @@
  					 </div>
 				</div>
 				
-				<table class="table" id="tabelaAutor">
+				<table class="table" id="tabelaEditora">
 				  <thead>
 				    <tr>
 				      <th scope="col">ID</th>
-				      <th scope="col">Nome</th>
-				      <th scope="col">Email</th>
-				      <th scope="col">Telefone</th>
+					 <th scope="col">Nome</th>				     
 				      <th scope="col">Deletar</th>
 				      <th scope="col">ver</th>
 				    </tr>
@@ -129,15 +126,16 @@
     	
     	$.ajax({
 			method: "GET",
-			url:"autor/editar",
+			url:"editora/editar",
 			data: "id="+id, 
 			
 			success: function(response){
 				
 				$("#id").val(response.id);
 				$("#nome").val(response.nome);
-				$("#email").val(response.email);
 				$("#telefone").val(response.telefone);
+				$("#email").val(response.email);
+				
 				
 			}
 		}).fail(function(xhr,status,errorThrown){
@@ -152,7 +150,7 @@
 			$.ajax({
 				
 				method: "DELETE",
-				url:"autor",
+				url:"editora",
 				data: "id=" + id , 
 				
 				success: function(response){
@@ -170,14 +168,14 @@
     window.onload = function(){
     $.ajax({
 		method: "GET",
-		url:"autor",
+		url:"editora",
 		 
 		success: function(response){
-			$('#tabelaAutor > tbody > tr').remove();
+			$('#tabelaEditora > tbody > tr').remove();
 			
 			for(var i=0; i < response.length; i++ ){
 				
-				$('#tabelaAutor > tbody').append('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td>'+response[i].email+'</td><td>'+response[i].telefone+'</td><td><button type="button" class="btn btn-primary" onclick="verEditar('+response[i].id+')">Ver</button></td><td><button type="button"  class="btn btn-danger" onclick="deletarUser('+response[i].id+')" >Deletar</button></td></tr>');	
+				$('#tabelaEstilo > tbody').append('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" class="btn btn-primary" onclick="verEditar('+response[i].id+')">Ver</button></td><td><button type="button"  class="btn btn-danger" onclick="deletarUser('+response[i].id+')" >Deletar</button></td></tr>');	
 				
 			}
 			
@@ -189,33 +187,25 @@
     }
     	function salvar(){
     		var id = $("#id").val();
-			var nome = $("#nome").val();
-			var email = $("#email").val();
-			var telefone = $("#telefone").val();
+			var estilo = $("#estilo").val();
 			
-			if(nome ==null || nome !=null && nome.trim() == ''){
-				alert('Informe o Nome');
-				return
-			}
-			if(email ==null || email !=null && email.trim() == ''){
-				alert('Informe o email');
-				return
-			}
-			if(telefone ==null || telefone !=null && telefone.trim() == ''){
-				alert('Informe o telefone');
+			
+			if(estilo ==null || estilo !=null && estilo.trim() == ''){
+				alert('Informe o Estilo');
 				return
 			}
 			
 			$.ajax({
 				method: "POST",
-				url:"autor",
-				data: JSON.stringify({id:id,nome:nome,email:email,telefone:telefone}), 
+				url:"estilo",
+				
+				data: JSON.stringify({id:id,nome:nome,telefone:telefone,email:email}), 
 				contentType:"application/json; charset=utf-8",
 				success: function(response){
 					$("#id").val(response.id);
 					alert('Gravou com sucesso!!!');
 					$('#'+id).remove();
-					$('#tabelaAutor > tbody').append('<tr id="'+response.id+'"><td>'+response.id+'</td><td>'+response.nome+'</td><td>'+response.email+'</td><td>'+response.telefone+'</td><td><button type="button" class="btn btn-primary" onclick="verEditar('+response.id+')">Ver</button></td><td><button type="button"  class="btn btn-danger" onclick="deletarUser('+response.id+')" >Deletar</button></td></tr>');	
+					$('#tabelaEditora > tbody').append('<tr id="'+response.id+'"><td>'+response.id+'</td><td>'+response.nome+'</td><td><button type="button" class="btn btn-primary" onclick="verEditar('+response.id+')">Ver</button></td><td><button type="button"  class="btn btn-danger" onclick="deletarUser('+response.id+')" >Deletar</button></td></tr>');	
 					
 				}
 			}).fail(function(xhr,status,errorThrown){
