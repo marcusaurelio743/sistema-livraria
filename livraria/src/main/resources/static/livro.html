@@ -54,7 +54,7 @@
               </li>
               
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="livro.html">
                   <span data-feather="shopping-cart"></span>
                   Livro
                 </a>
@@ -69,7 +69,7 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <h1 class="h2">Cadastro de Autores</h1>
+            <h1 class="h2">Cadastro de Livros </h1>
             	
           </div>
 
@@ -86,35 +86,33 @@
 						  </div>
 						  <div class="form-group">
 						    <label for="descricao">Descrição:</label>
-						    <input type="text" class="form-control" id="descricao" placeholder="Informe o email">
-						  </div>
-						  <div class="form-group">
-						     <label for="exampleFormControlSelect1">Selecione Autor</label>
-						     
-							    <select class="form-control" id="SelecioneAutor" name="autorid" required>
-							      
-							    </select>
-						  </div>
-						   <div class="form-group">
-						     <label for="exampleFormControlSelect1">Selecione Editora</label>
-						     
-							    <select class="form-control" id="SelecioneEditora" name="editoraid" required>
-							      
-							    </select>
-						  </div>
-						   <div class="form-group">
-						     <label for="exampleFormControlSelect1">Selecione Estilo</label>
-						     
-							    <select class="form-control" id="SelecioneEstilo" name="estiloid" required>
-							      
-							    </select>
+						    <input type="text" class="form-control" id="descricao" placeholder="Informe a descrição do Livro">
 						  </div>
 						  
+						     <div class="form-group">
+						    	<label for="SelecioneAutor">Selecione um Autor</label>
+								<select class="form-control" id="SelecioneAutor" name="autorId">
+								      
+								</select>
+							 </div>
+							 
+							 <div class="form-group">
+						    	<label for="SelecioneEditora">Selecione Editora</label>
+								<select class="form-control" id="SelecioneEditora" name="editoraId">
+								      
+								</select>
+							 </div>
+							 
+							 <div class="form-group">
+						    	<label for="SelecioneEstilo">Selecione Estilo</label>
+								<select class="form-control" id="SelecioneEstilo" name="estiloId">
+								      
+								</select>
+							 </div>
+						   
 						  
-						  <div class="form-group">
-						    <label for="telefone">Telefone:</label>
-						    <input type="text" class="form-control" id="telefone" placeholder="Informe o telefone">
-						  </div>
+						  
+						  
 						  <button type="button" class="btn btn-primary" onclick="salvar()">Salvar</button>
 						   
 						  <button type="button" class="btn btn-secondary" onclick="document.getElementById('formAutor').reset();">Novo</button>
@@ -123,13 +121,14 @@
  					 </div>
 				</div>
 				
-				<table class="table" id="tabelaAutor">
+				<table class="table" id="tabelaLivro">
 				  <thead>
 				    <tr>
 				      <th scope="col">ID</th>
 				      <th scope="col">Nome</th>
-				      <th scope="col">Email</th>
-				      <th scope="col">Telefone</th>
+				      <th scope="col">autor</th>
+				      <th scope="col">editora</th>
+				      <th scope="col">estilo</th>
 				      <th scope="col">Deletar</th>
 				      <th scope="col">ver</th>
 				    </tr>
@@ -151,15 +150,17 @@
     	
     	$.ajax({
 			method: "GET",
-			url:"autor/editar",
+			url:"livro/editar",
 			data: "id="+id, 
 			
 			success: function(response){
 				
 				$("#id").val(response.id);
-				$("#nome").val(response.nome);
-				$("#email").val(response.email);
-				$("#telefone").val(response.telefone);
+				$("#titulo").val(response.titulo);
+				$("#descricao").val(response.descricao);
+				$("#SelecioneAutor").val(response.autor.id);
+				$("#SelecioneEditora").val(response.editora.id);
+				$("#SelecioneEstilo").val(response.estilo.id);
 				
 			}
 		}).fail(function(xhr,status,errorThrown){
@@ -174,7 +175,7 @@
 			$.ajax({
 				
 				method: "DELETE",
-				url:"autor",
+				url:"livro",
 				data: "id=" + id , 
 				
 				success: function(response){
@@ -189,13 +190,13 @@
 		
 	}
     
-    window.onload = function autor(){
+    window.onload = function (){
         $.ajax({
     		method: "GET",
     		url:"autor",
     		 
     		success: function(response){
-    			$('#SelecioneAutor ').remove();
+    			
     			$('#SelecioneAutor ').append('<option value="">--Selecione-- </option>');
     			for(var i=0; i < response.length; i++ ){
     				
@@ -208,14 +209,33 @@
     		alert('erro ao gravar: '+xhr.responseText);
     	
     	});
-        }
-    window.onload = function editora(){
+        
+        $.ajax({
+    		method: "GET",
+    		url:"estilo",
+    		 
+    		success: function(response){
+    			
+    			$('#SelecioneEstilo ').append('<option value="">--Selecione-- </option>');
+    			for(var i=0; i < response.length; i++ ){
+    				
+    				$('#SelecioneEstilo ').append('<option value="'+response[i].id+'">'+response[i].estilo+' </option>');	
+    				
+    			}
+    			
+    		}
+    	}).fail(function(xhr,status,errorThrown){
+    		alert('erro ao gravar: '+xhr.responseText);
+    	
+    	});
+        
+        
         $.ajax({
     		method: "GET",
     		url:"editora",
     		 
     		success: function(response){
-    			$('#SelecioneEditora ').remove();
+    			
     			$('#SelecioneEditora ').append('<option value="">--Selecione-- </option>');
     			for(var i=0; i < response.length; i++ ){
     				
@@ -228,18 +248,19 @@
     		alert('erro ao gravar: '+xhr.responseText);
     	
     	});
-        }
-    window.onload = function estilo(){
+        
+        
         $.ajax({
     		method: "GET",
-    		url:"estilo",
+    		url:"livro",
     		 
     		success: function(response){
-    			$('#SelecioneEstilo ').remove();
-    			$('#SelecioneEstilo ').append('<option value="">--Selecione-- </option>');
+    			$('#tabelaLivro > tbody > tr').remove();
+    			
     			for(var i=0; i < response.length; i++ ){
     				
-    				$('#SelecioneEstilo ').append('<option value="'+response[i].id+'">'+response[i].nome+' </option>');	
+    				
+    				$('#tabelaLivro > tbody').append('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].titulo+'</td><td>'+response[i].autor.nome+'</td><td>'+response[i].editora.nome+'</td><td>'+response[i].estilo.estilo+'</td><td><button type="button" class="btn btn-primary" onclick="verEditar('+response[i].id+')">Ver</button></td><td><button type="button"  class="btn btn-danger" onclick="deletarUser('+response[i].id+')" >Deletar</button></td></tr>');	
     				
     			}
     			
@@ -248,32 +269,49 @@
     		alert('erro ao gravar: '+xhr.responseText);
     	
     	});
-        }
+        
+    
+    }
+    
+   
+    
     
    
     	function salvar(){
-    		var id = $("#id").val();
-			var nome = $("#nome").val();
-			var email = $("#email").val();
-			var telefone = $("#telefone").val();
+    		
 			
-			if(nome ==null || nome !=null && nome.trim() == ''){
-				alert('Informe o Nome');
+			var id = $("#id").val();
+			var titulo = $("#titulo").val();
+			var descricao = $("#descricao").val();
+			var SelecioneAutor = $("#SelecioneAutor").val();
+			var SelecioneEditora = $("#SelecioneEditora").val();
+			var SelecioneEstilo = $("#SelecioneEstilo").val();
+			
+			if(titulo ==null || titulo !=null && titulo.trim() == ''){
+				alert('Informe o titulo');
 				return
 			}
-			if(email ==null || email !=null && email.trim() == ''){
-				alert('Informe o email');
+			if(descricao ==null || descricao !=null && descricao.trim() == ''){
+				alert('Informe a descricao');
 				return
 			}
-			if(telefone ==null || telefone !=null && telefone.trim() == ''){
-				alert('Informe o telefone');
+			if(SelecioneAutor ==null || SelecioneAutor !=null && SelecioneAutor.trim() == ''){
+				alert('Selecione um Autor');
+				return
+			}
+			if(SelecioneEditora ==null || SelecioneEditora !=null && SelecioneEditora.trim() == ''){
+				alert('Selecione uma Editora');
+				return
+			}
+			if(SelecioneEstilo ==null || SelecioneEstilo !=null && SelecioneEstilo.trim() == ''){
+				alert('Selecione um Estilo');
 				return
 			}
 			
 			$.ajax({
 				method: "POST",
-				url:"autor",
-				data: JSON.stringify({id:id,nome:nome,email:email,telefone:telefone}), 
+				url:"livro?autor_id="+SelecioneAutor+"&editora_id="+SelecioneEditora+"&estilo_id="+SelecioneEstilo,
+				data: JSON.stringify({id:id,titulo:titulo,descricao:descricao}), 
 				contentType:"application/json; charset=utf-8",
 				success: function(response){
 					var id =$("#id").val(response.id);
@@ -281,8 +319,8 @@
 					if(id == response.id ){
 					$('#'+id).remove();
 					}
-					$('#tabelaAutor > tbody').append('<tr id="'+response.id+'"><td>'+response.id+'</td><td>'+response.nome+'</td><td>'+response.email+'</td><td>'+response.telefone+'</td><td><button type="button" class="btn btn-primary" onclick="verEditar('+response.id+')">Ver</button></td><td><button type="button"  class="btn btn-danger" onclick="deletarUser('+response.id+')" >Deletar</button></td></tr>');	
-					
+					$('#tabelaLivro > tbody').append('<tr id="'+response.id+'"><td>'+response.id+'</td><td>'+response.titulo+'</td><td>'+response.autor.nome+'</td><td>'+response.editora.nome+'</td><td>'+response.estilo.estilo+'</td><td><button type="button" class="btn btn-primary" onclick="verEditar('+response.id+')">Ver</button></td><td><button type="button"  class="btn btn-danger" onclick="deletarUser('+response.id+')" >Deletar</button></td></tr>');	
+    				
 				}
 			}).fail(function(xhr,status,errorThrown){
 				alert('erro ao gravar: '+xhr.responseText);
