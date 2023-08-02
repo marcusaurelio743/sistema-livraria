@@ -48,6 +48,11 @@ public class Estilo {
 	public String toString() {
 		return "Estilo [id=" + id + ", estilo=" + estilo + "]";
 	}
+	public Estilo() {
+		
+		this.id = (long) 0;
+		this.estilo = "";
+	}
 	
 	
 	

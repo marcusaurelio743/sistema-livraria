@@ -53,17 +53,10 @@
                 </a>
               </li>
               
-               <li class="nav-item">
+              <li class="nav-item">
                 <a class="nav-link" href="livro.html">
                   <span data-feather="shopping-cart"></span>
                   Livro
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a class="nav-link" href="busca.html">
-                  <span data-feather="shopping-cart"></span>
-                  Buscar Livro
                 </a>
               </li>
               
@@ -76,36 +69,39 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <h1 class="h2">Cadastrar Estilo</h1>
+            <h1 class="h2">Buscar Livros </h1>
             	
           </div>
 
          		<div class="card">
   					<div class="card-body">
-    					<form id="formAutor">
-						  <div class="form-group">
-						    <label for="id">ID:</label>
-						    <input type="text" class="form-control" id="id" readonly="readonly">
-						  </div>
-						  <div class="form-group">
-						    <label for="estilo">Estilo:</label>
-						    <input type="text" class="form-control" id="estilo" placeholder="Informe o Estilo">
-						  </div>
+    					<form id="formBusca">
 						  
-						  <button type="button" class="btn btn-primary" onclick="salvar()">Salvar</button>
+						  <div class="form-group">
+						    <label for="titulo">Titulo:</label>
+						    <input type="text" class="form-control" id="titulo" placeholder="Informe o Titulo">
+						  </div>
+						   
+						  
+						  
+						  
+						  <button type="button" class="btn btn-primary" onclick="buscar()">Buscar</button>
 						   
 						  <button type="button" class="btn btn-secondary" onclick="document.getElementById('formAutor').reset();">Novo</button>
+						  
 						</form>
  					 </div>
 				</div>
 				
-				<table class="table" id="tabelaEstilo">
+				<table class="table" id="tabelaLivro">
 				  <thead>
 				    <tr>
 				      <th scope="col">ID</th>
-					 <th scope="col">Estilo</th>				     
-				      <th scope="col">Ver</th>
-				      <th scope="col">Deletar</th>
+				      <th scope="col">Nome</th>
+				      <th scope="col">autor</th>
+				      <th scope="col">editora</th>
+				      <th scope="col">estilo</th>
+				      
 				    </tr>
 				  </thead>
 				  <tbody>
@@ -121,94 +117,49 @@
     
     <script type="text/javascript">
     
-    function verEditar(id){
+    function buscar(){
     	
-    	$.ajax({
-			method: "GET",
-			url:"estilo/editar",
-			data: "id="+id, 
-			
-			success: function(response){
-				
-				$("#id").val(response.id);
-				$("#estilo").val(response.estilo);
-				
-			}
-		}).fail(function(xhr,status,errorThrown){
-			alert('erro ao buscar: '+xhr.responseText);
-		});
-    	
-    }
-    
-    function deletarUser(id){
-    	
-		if(confirm('Deseja Realmente deletar esse registro?')){
-			$.ajax({
-				
-				method: "DELETE",
-				url:"estilo",
-				data: "id=" + id , 
-				
-				success: function(response){
-					$('#'+id).remove();
-					alert("removido com sucesso!!!");
-					
-				}
-			}).fail(function(xhr,status,errorThrown){
-				alert('erro ao Deletar Usuario: '+xhr.responseText);
-			});
-	  }
+    	var id = $("#id").val();
+		var titulo = $("#titulo").val();
+		var SelecioneAutor = $("#SelecioneAutor").val();
+		var SelecioneEditora = $("#SelecioneEditora").val();
+		var SelecioneEstilo = $("#SelecioneEstilo").val();
 		
-	}
-    
-    window.onload = function(){
-    $.ajax({
-		method: "GET",
-		url:"estilo",
-		 
-		success: function(response){
-			$('#tabelaEstilo > tbody > tr').remove();
-			
-			for(var i=0; i < response.length; i++ ){
-				
-				$('#tabelaEstilo > tbody').append('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].estilo+'</td><td><button type="button" class="btn btn-primary" onclick="verEditar('+response[i].id+')">Ver</button></td><td><button type="button"  class="btn btn-danger" onclick="deletarUser('+response[i].id+')" >Deletar</button></td></tr>');	
-				
-			}
-			
-		}
-	}).fail(function(xhr,status,errorThrown){
-		alert('erro ao gravar: '+xhr.responseText);
-	
-	});
+		
+		
+		
+    	
+    	 $.ajax({
+     		method: "GET",
+     		url:"livro/buscar?titulo="+titulo+"&id_autor="+SelecioneAutor+"&id_editora="+SelecioneEditora+"&id_estilo="+SelecioneEstilo,
+     		
+     		 
+     		success: function(response){
+     			$('#tabelaLivro > tbody > tr').remove();
+     			
+     			for(var i=0; i < response.length; i++ ){
+     				
+     				
+     				$('#tabelaLivro > tbody').append('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].titulo+'</td><td>'+response[i].autor.nome+'</td><td>'+response[i].editora.nome+'</td><td>'+response[i].estilo.estilo+'</td></tr>');	
+     				
+     			}
+     			
+     		}
+     	}).fail(function(xhr,status,errorThrown){
+     		alert('erro ao Buscar: '+xhr.responseText);
+     	
+     	});
+    	
     }
-    	function salvar(){
-    		var id = $("#id").val();
-			var estilo = $("#estilo").val();
-			
-			
-			if(estilo ==null || estilo !=null && estilo.trim() == ''){
-				alert('Informe o Estilo');
-				return
-			}
-			
-			$.ajax({
-				method: "POST",
-				url:"estilo",
-				data: JSON.stringify({id:id,estilo:estilo}), 
-				contentType:"application/json; charset=utf-8",
-				success: function(response){
-					var id =$("#id").val(response.id);
-					alert('Gravou com sucesso!!!');
-					if(id == response.id ){
-					$('#'+id).remove();
-					}
-					$('#tabelaEstilo > tbody').append('<tr id="'+response.id+'"><td>'+response.id+'</td><td>'+response.estilo+'</td><td><button type="button" class="btn btn-primary" onclick="verEditar('+response.id+')">Ver</button></td><td><button type="button"  class="btn btn-danger" onclick="deletarUser('+response.id+')" >Deletar</button></td></tr>');	
-					
-				}
-			}).fail(function(xhr,status,errorThrown){
-				alert('erro ao gravar: '+xhr.responseText);
-			});
-    	}
+    
+   
+    
+   
+   
+    
+    
+   
+    	
     
     </script>
 

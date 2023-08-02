@@ -57,6 +57,19 @@ public class LivroController {
 		return livro;
 	}
 	
+	@GetMapping(value = "buscar")
+	public List<Livro> buscarPorParamento(@RequestParam(required = false) String titulo ){
+		
+		
+		
+		
+		
+		List<Livro> resultado = repository.findByTitulo(titulo = "%"+titulo+"%");
+		return resultado;
+		
+	}
+	
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	

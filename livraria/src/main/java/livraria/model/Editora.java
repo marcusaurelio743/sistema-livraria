@@ -76,6 +76,14 @@ public class Editora {
 	public String toString() {
 		return "Editora [id=" + id + ", nome=" + nome + ", telefone=" + telefone + ", email=" + email + "]";
 	}
+
+	public Editora() {
+		
+		this.id = (long) 0;
+		this.nome = "";
+		this.telefone = "";
+		this.email = "";
+	}
 	
 	
 	

@@ -76,6 +76,19 @@ public class Autor {
 	public String toString() {
 		return "Autor [id=" + id + ", nome=" + nome + ", telefone=" + telefone + ", email=" + email + "]";
 	}
+
+	public Autor() {
+	    this.id=(long) 0;
+		this.nome = "";
+		this.telefone = "";
+		this.email = "";
+	}
+	
+
+	
+
+	
+	
 	
 	
 	
